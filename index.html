@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Model Canvas — Growth StratEx</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f1f3d;
+    --navy-light: #1a3260;
+    --gold: #c9a84c;
+    --gold-light: #e0c070;
+    --gold-pale: #f5ecd0;
+    --cream: #faf7f0;
+    --text: #1a1a2e;
+    --text-muted: #5a5a7a;
+    --border: rgba(15,31,61,0.12);
+    --border-strong: rgba(201,168,76,0.4);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Jost', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+
+  header {
+    background: var(--navy); padding: 1.75rem 2.5rem;
+    border-bottom: 2px solid var(--gold); text-align: center;
+  }
+  .brand-name { font-family: 'Cormorant Garamond', serif; font-size: 27px; font-weight: 600; color: var(--gold); letter-spacing: 0.02em; }
+  .brand-tag { font-size: 11px; font-weight: 300; color: rgba(201,168,76,0.55); letter-spacing: 0.2em; text-transform: uppercase; margin-top: 3px; }
+  .header-divider { width: 40px; height: 1px; background: rgba(201,168,76,0.3); margin: 10px auto; }
+  .doc-title { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 400; font-style: italic; color: rgba(250,247,240,0.7); }
+
+  .intro { max-width: 860px; margin: 2rem auto 1.5rem; padding: 0 2rem; }
+  .intro p { font-size: 16px; color: var(--text-muted); line-height: 1.8; }
+  .intro strong { color: var(--navy); font-weight: 500; }
+
+  .info-bar {
+    max-width: 860px; margin: 0 auto 2rem; padding: 0 2rem;
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; align-items: end;
+  }
+  .info-field { display: flex; flex-direction: column; gap: 4px; }
+  .info-field label { font-size: 12px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+  .info-field input {
+    font-family: 'Jost', sans-serif; font-size: 15px; padding: 7px 10px;
+    border: 0.5px solid var(--border); border-bottom: 1.5px solid var(--gold);
+    background: white; color: var(--text); border-radius: 3px 3px 0 0;
+    outline: none; transition: border-color 0.15s; width: 100%;
+  }
+  .info-field input:focus { border-bottom-color: var(--navy); }
+
+  .canvas-wrap { max-width: 980px; margin: 0 auto; padding: 0 2rem 2rem; }
+  .canvas-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0,1fr));
+    grid-template-rows: auto auto auto;
+    gap: 8px;
+  }
+  .cell {
+    background: white; border: 0.5px solid var(--border);
+    border-top: 2.5px solid var(--border); border-radius: 4px;
+    padding: 12px 14px; display: flex; flex-direction: column;
+    min-height: 150px; cursor: pointer;
+    transition: border-top-color 0.2s, box-shadow 0.2s; position: relative;
+  }
+  .cell:hover { border-top-color: var(--gold-light); }
+  .cell.active { border-top-color: var(--gold); box-shadow: 0 2px 16px rgba(201,168,76,0.15); }
+  .cell-kp   { grid-column: 1; grid-row: 1 / 3; }
+  .cell-ka   { grid-column: 2; grid-row: 1; }
+  .cell-vp   { grid-column: 3; grid-row: 1 / 3; min-height: 308px; border-top-color: var(--gold) !important; }
+  .cell-cr   { grid-column: 4; grid-row: 1; }
+  .cell-cs   { grid-column: 5; grid-row: 1 / 3; }
+  .cell-kr   { grid-column: 2; grid-row: 2; }
+  .cell-ch   { grid-column: 4; grid-row: 2; }
+  .cell-cost { grid-column: 1 / 4; grid-row: 3; min-height: 100px; }
+  .cell-rev  { grid-column: 4 / 6; grid-row: 3; min-height: 100px; }
+
+  .cell-label { font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+  .cell-number { position: absolute; top: 10px; right: 12px; font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; color: rgba(201,168,76,0.2); line-height: 1; }
+
+  textarea.cell-input {
+    flex: 1; resize: none; border: none; background: transparent;
+    font-family: 'Jost', sans-serif; font-size: 15px; color: var(--text);
+    line-height: 1.6; outline: none; min-height: 50px; width: 100%;
+  }
+  textarea.cell-input::placeholder { color: rgba(90,90,122,0.35); font-style: italic; font-size: 14px; }
+
+  .prompt-panel { max-width: 980px; margin: 10px auto 0; padding: 0 2rem; }
+  .panel-inner { background: var(--navy); border-radius: 6px; padding: 20px 24px; color: white; min-height: 80px; }
+  .panel-empty { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: rgba(250,247,240,0.35); font-style: italic; text-align: center; padding: 1rem 0; }
+
+  .panel-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 0.5px solid rgba(201,168,76,0.25); }
+  .panel-tag { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; background: rgba(201,168,76,0.2); color: var(--gold-light); padding: 3px 10px; border-radius: 99px; border: 0.5px solid rgba(201,168,76,0.3); }
+  .panel-block-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 500; color: var(--cream); }
+  .panel-frame { font-size: 14.5px; color: rgba(250,247,240,0.5); line-height: 1.6; font-style: italic; margin-bottom: 14px; }
+
+  .prompt-list { list-style: none; display: flex; flex-direction: column; gap: 0; counter-reset: q; }
+  .prompt-item { font-size: 15px; color: rgba(250,247,240,0.82); line-height: 1.6; padding: 10px 0 10px 18px; position: relative; border-bottom: 0.5px solid rgba(255,255,255,0.06); counter-increment: q; }
+  .prompt-item:last-child { border-bottom: none; }
+  .prompt-item::before { content: counter(q); position: absolute; left: 0; top: 11px; font-family: 'Cormorant Garamond', serif; font-size: 15px; color: var(--gold); font-weight: 500; }
+  .bridge { font-size: 13.5px; color: rgba(201,168,76,0.6); font-style: italic; padding: 4px 0 6px 18px; line-height: 1.5; }
+
+  .actions {
+    max-width: 980px; margin: 14px auto 3rem; padding: 0 2rem;
+    display: flex; justify-content: flex-end; align-items: center; gap: 10px;
+  }
+  .actions-note { font-size: 13px; color: var(--text-muted); font-style: italic; margin-right: auto; }
+  .btn {
+    font-family: 'Jost', sans-serif; font-size: 14px; font-weight: 500;
+    letter-spacing: 0.06em; padding: 9px 22px; border-radius: 3px;
+    cursor: pointer; transition: all 0.15s; border: none;
+  }
+  .btn-primary { background: var(--navy); color: var(--gold); border: 0.5px solid var(--navy); }
+  .btn-primary:hover { background: var(--navy-light); }
+
+  footer {
+    background: var(--navy); border-top: 1px solid rgba(201,168,76,0.2);
+    padding: 1.25rem 2.5rem; text-align: center;
+  }
+  .footer-brand { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-style: italic; color: rgba(201,168,76,0.6); margin-bottom: 6px; }
+  .footer-credit { font-size: 12px; color: rgba(250,247,240,0.3); letter-spacing: 0.05em; }
+  .footer-credit a { color: rgba(201,168,76,0.45); text-decoration: none; transition: color 0.15s; }
+  .footer-credit a:hover { color: var(--gold); }
+
+  @media print {
+    header, footer { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .prompt-panel, .actions, .intro { display: none !important; }
+    body { background: white; }
+    .cell { break-inside: avoid; min-height: 120px; }
+    .canvas-wrap { padding: 1rem; }
+    .info-bar { margin-bottom: 1rem; }
+  }
+
+  @media (max-width: 720px) {
+    .canvas-grid { grid-template-columns: 1fr 1fr; }
+    .cell-kp, .cell-vp, .cell-cs { grid-column: auto; grid-row: auto; min-height: 130px; }
+    .cell-cost, .cell-rev { grid-column: auto; }
+    .info-bar { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand-name">Growth StratEx</div>
+  <div class="brand-tag">Strategy. Realised.</div>
+  <div class="header-divider"></div>
+  <div class="doc-title">Business Model Canvas</div>
+</header>
+
+<div class="intro">
+  <p><strong>How to use this.</strong> Start with <em>Customer Segments</em> — not Value Propositions. Click any block to reveal the thinking frame and questions. Work through them in order. Each question builds on the previous one. The goal is strategic clarity, not a completed form.</p>
+</div>
+
+<div class="info-bar">
+  <div class="info-field">
+    <label>Your name</label>
+    <input type="text" id="f-name" placeholder="Full name" />
+  </div>
+  <div class="info-field">
+    <label>Company / Venture</label>
+    <input type="text" id="f-company" placeholder="Company name" />
+  </div>
+  <div class="info-field">
+    <label>Date</label>
+    <input type="text" id="f-date" placeholder="dd mmm yyyy" />
+  </div>
+</div>
+
+<div class="canvas-wrap">
+  <div class="canvas-grid">
+
+    <div class="cell cell-kp" data-key="kp" onclick="activate(this)">
+      <div class="cell-label">Key Partnerships</div><div class="cell-number">1</div>
+      <textarea class="cell-input" id="note-kp" placeholder="Who helps you deliver?" oninput="markFilled('kp')"></textarea>
+    </div>
+
+    <div class="cell cell-ka" data-key="ka" onclick="activate(this)">
+      <div class="cell-label">Key Activities</div><div class="cell-number">2</div>
+      <textarea class="cell-input" id="note-ka" placeholder="What does your business do repeatedly?" oninput="markFilled('ka')"></textarea>
+    </div>
+
+    <div class="cell cell-vp" data-key="vp" onclick="activate(this)">
+      <div class="cell-label">Value Propositions</div><div class="cell-number">3</div>
+      <textarea class="cell-input" id="note-vp" placeholder="What job are you hired to do?" oninput="markFilled('vp')"></textarea>
+    </div>
+
+    <div class="cell cell-cr" data-key="cr" onclick="activate(this)">
+      <div class="cell-label">Customer Relationships</div><div class="cell-number">4</div>
+      <textarea class="cell-input" id="note-cr" placeholder="How do they experience you?" oninput="markFilled('cr')"></textarea>
+    </div>
+
+    <div class="cell cell-cs" data-key="cs" onclick="activate(this)">
+      <div class="cell-label">Customer Segments</div><div class="cell-number">5</div>
+      <textarea class="cell-input" id="note-cs" placeholder="Start here. Who exactly?" oninput="markFilled('cs')"></textarea>
+    </div>
+
+    <div class="cell cell-kr" data-key="kr" onclick="activate(this)">
+      <div class="cell-label">Key Resources</div><div class="cell-number">6</div>
+      <textarea class="cell-input" id="note-kr" placeholder="What assets power this?" oninput="markFilled('kr')"></textarea>
+    </div>
+
+    <div class="cell cell-ch" data-key="ch" onclick="activate(this)">
+      <div class="cell-label">Channels</div><div class="cell-number">7</div>
+      <textarea class="cell-input" id="note-ch" placeholder="How do they find you?" oninput="markFilled('ch')"></textarea>
+    </div>
+
+    <div class="cell cell-cost" data-key="cost" onclick="activate(this)">
+      <div class="cell-label">Cost Structure</div><div class="cell-number">8</div>
+      <textarea class="cell-input" id="note-cost" placeholder="Where does the money go?" oninput="markFilled('cost')"></textarea>
+    </div>
+
+    <div class="cell cell-rev" data-key="rev" onclick="activate(this)">
+      <div class="cell-label">Revenue Streams</div><div class="cell-number">9</div>
+      <textarea class="cell-input" id="note-rev" placeholder="How do you get paid?" oninput="markFilled('rev')"></textarea>
+    </div>
+
+  </div>
+</div>
+
+<div class="prompt-panel">
+  <div class="panel-inner" id="panel">
+    <div class="panel-empty">Click any block above — the thinking frame and questions will appear here.</div>
+  </div>
+</div>
+
+<div class="actions">
+  <span class="actions-note">Fill the canvas, then save it as a PDF to keep or share.</span>
+  <button class="btn btn-primary" onclick="window.print()">Save as PDF</button>
+</div>
+
+<footer>
+  <div class="footer-brand">Growth StratEx · Strategy. Realised.</div>
+  <div class="footer-credit">Designed by <a href="mailto:shankar@growthstratex.com">Shankar · shankar@growthstratex.com</a></div>
+</footer>
+
+<script>
+const prompts = {
+  cs: {
+    tag: 'Start here', label: 'Customer Segments',
+    frame: 'Your segment is not a category — it\'s a trigger. Build bottoms-up from real buyers, not imagined ones.',
+    items: [
+      { q: 'Who actually paid you in the last 6 months? Write down 5–10 real names or companies.', bridge: 'Look across them — geography, industry, revenue size, role, gender, occasion. What do they share?' },
+      { q: 'Group them by what triggered the purchase — the situation or moment that made them come to you. Give each group a working label.', bridge: 'Is that label specific enough that you could find 10 more like them tomorrow?' },
+      { q: 'Name each segment in one crisp line. Which one, if you focused only on them for the next 12 months, grows your business fastest?', bridge: null }
+    ]
+  },
+  vp: {
+    tag: 'Heart of the canvas', label: 'Value Propositions',
+    frame: 'You are not selling a product or service — you are solving a specific problem for a specific person in a specific moment. Start there.',
+    items: [
+      { q: 'Pick your primary segment. What was their life like just before they found you? What was broken, missing, or frustrating?', bridge: 'That gap is your real value proposition — not what you offer, but what you fix.' },
+      { q: 'What did they stop doing, stop worrying about, or start achieving because of you?', bridge: 'Is that outcome something they would pay more for — or something they now take for granted?' },
+      { q: 'Write your value proposition in one line: "We help [segment] do [outcome] without [pain]." Does that line make your customer say — yes, that\'s exactly it?', bridge: null }
+    ]
+  },
+  cr: {
+    tag: 'Often overlooked', label: 'Customer Relationships',
+    frame: 'How a customer experiences you between transactions determines whether they come back, refer others, or forget you.',
+    items: [
+      { q: 'Think of the last time a customer interacted with you outside of a transaction — what was it, who initiated it, and what happened?', bridge: 'If nothing comes to mind, that\'s the answer.' },
+      { q: 'For each segment, what does trust look like to them — responsiveness, consistency, personalisation, expertise? Are you delivering that?', bridge: 'Where is the gap between what they expect and what they actually get?' },
+      { q: 'Which relationship, if deepened over the next 6 months, would most change your revenue? What is one concrete thing you would do differently?', bridge: null }
+    ]
+  },
+  ch: {
+    tag: 'How they find you', label: 'Channels',
+    frame: 'Your channel is not where you sell — it\'s where your customer goes when they first realise they have a problem. Are you there?',
+    items: [
+      { q: 'For your primary customer, trace the last 3 buyers back to the beginning — how did they first hear about you?', bridge: 'Is that a repeatable path or a one-off? Could you engineer more of it?' },
+      { q: 'Where does your customer go to look for options in this space — search, referral, community, event, social? Are you visible there?', bridge: 'Where are you spending effort on a channel that looks busy but rarely converts?' },
+      { q: 'If you had to acquire 10 new customers in the next 90 days using only one channel, which one would you bet on and why?', bridge: null }
+    ]
+  },
+  ka: {
+    tag: 'What you do', label: 'Key Activities',
+    frame: 'Your key activities are not your to-do list — they are the small set of things your business does repeatedly that directly create the value your customer pays for.',
+    items: [
+      { q: 'List the things your business does repeatedly to deliver your value proposition — sales, delivery, support, production, whatever applies.', bridge: 'Now mark the ones a customer would notice if you stopped doing them. Everything unmarked is overhead, delegation, or distraction.' },
+      { q: 'Of what remains, which activities are genuinely hard for a competitor to copy — because of your skill, relationships, or accumulated knowledge?', bridge: 'That\'s where your defensibility lives.' },
+      { q: 'Which one activity, if you did it significantly better over the next 6 months, would have the biggest impact on growth?', bridge: null }
+    ]
+  },
+  kr: {
+    tag: 'What powers you', label: 'Key Resources',
+    frame: 'Your most valuable resources are rarely the obvious ones. The real question is — what do you have that took years to build and would take a competitor years to replicate?',
+    items: [
+      { q: 'List what you have — people, IP, relationships, tools, data, reputation. Mark the ones that directly enable your value proposition.', bridge: 'Remove anything a well-funded competitor could buy or build in 12 months.' },
+      { q: 'Of what remains, which resource is most at risk — because it depends on one person, one platform, or one relationship?', bridge: 'That\'s your most urgent vulnerability.' },
+      { q: 'Which resource are you currently underusing — one that, if deployed differently, could open a new segment or channel?', bridge: null }
+    ]
+  },
+  kp: {
+    tag: 'Who helps you', label: 'Key Partnerships',
+    frame: 'A real partnership gives you something you could not build yourself in reasonable time. Everything else is a supplier.',
+    items: [
+      { q: 'List everyone outside your organisation you depend on to deliver your value proposition.', bridge: 'Now separate the ones who are genuinely irreplaceable from the ones who are just convenient.' },
+      { q: 'For each irreplaceable partner — what would happen if they walked away tomorrow? Do you have a fallback?', bridge: 'Where are you treating a dependency as if it were a partnership?' },
+      { q: 'Which partnership are you underusing — one who could open doors, bring credibility, or reach a segment you\'ve been unable to crack on your own?', bridge: null }
+    ]
+  },
+  cost: {
+    tag: 'Where money goes', label: 'Cost Structure',
+    frame: 'Your cost structure tells you what your business believes is important. The question is whether that matches what your customer actually values.',
+    items: [
+      { q: 'List your top 5 costs. For each one, mark whether it directly contributes to the value your customer pays for — or not.', bridge: 'Anything unmarked is worth questioning.' },
+      { q: 'Which costs are fixed regardless of how much you sell — and which grow with revenue? Are you comfortable with that ratio as you scale?', bridge: 'Where are you paying full price for something a partner could provide more cheaply?' },
+      { q: 'If you had to cut costs by 20% without the customer noticing, where would you start?', bridge: null }
+    ]
+  },
+  rev: {
+    tag: 'How you earn', label: 'Revenue Streams',
+    frame: 'How you charge shapes what your customer values. A pricing model misaligned with customer value is a growth ceiling in disguise.',
+    items: [
+      { q: 'For each segment, what specifically are they paying for — your time, a deliverable, an outcome, access, or peace of mind?', bridge: 'Is that what you are actually charging for — or are you charging for something easier to measure but less valuable to them?' },
+      { q: 'What percentage of your revenue is recurring versus one-time? Is that a deliberate choice or just how it evolved?', bridge: 'Which customers are getting significant value from you but not paying proportionately for it?' },
+      { q: 'If you could redesign your pricing model from scratch for your primary segment, what would it look like — and what would it unlock?', bridge: null }
+    ]
+  }
+};
+
+function activate(el) {
+  document.querySelectorAll('.cell').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  const p = prompts[el.dataset.key];
+  let itemsHTML = '';
+  p.items.forEach(item => {
+    itemsHTML += `<li class="prompt-item">${item.q}</li>`;
+    if (item.bridge) itemsHTML += `<div class="bridge">↳ ${item.bridge}</div>`;
+  });
+  document.getElementById('panel').innerHTML = `
+    <div class="panel-header">
+      <span class="panel-tag">${p.tag}</span>
+      <span class="panel-block-name">${p.label}</span>
+    </div>
+    <div class="panel-frame">${p.frame}</div>
+    <ul class="prompt-list">${itemsHTML}</ul>`;
+}
+
+function markFilled(key) {
+  const val = document.getElementById('note-'+key).value.trim();
+  document.querySelector(`.cell[data-key="${key}"]`).style.borderTopColor = val ? '#c9a84c' : '';
+}
+
+document.getElementById('f-date').value = new Date().toLocaleDateString('en-IN', {
+  day: '2-digit', month: 'short', year: 'numeric'
+});
+</script>
+</body>
+</html>
