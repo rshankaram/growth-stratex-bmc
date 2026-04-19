@@ -121,6 +121,9 @@
   .footer-credit a { color: rgba(201,168,76,0.45); text-decoration: none; transition: color 0.15s; }
   .footer-credit a:hover { color: var(--gold); }
 
+  .print-val { display: none; }
+  .print-area { display: none; }
+
   @media print {
     header, footer { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .prompt-panel, .actions, .intro { display: none !important; }
@@ -128,6 +131,27 @@
     .cell { break-inside: avoid; min-height: 120px; }
     .canvas-wrap { padding: 1rem; }
     .info-bar { margin-bottom: 1rem; }
+    .info-field input { display: none; }
+    .print-val {
+      display: block;
+      font-family: 'Jost', sans-serif;
+      font-size: 15px;
+      color: #1a1a2e;
+      padding: 7px 0;
+      border-bottom: 0.5px solid #ccc;
+      min-height: 32px;
+    }
+    textarea.cell-input { display: none; }
+    .print-area {
+      display: block !important;
+      font-family: 'Jost', sans-serif;
+      font-size: 15px;
+      color: #1a1a2e;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      flex: 1;
+    }
+    .cell-number { display: none; }
   }
 
   @media (max-width: 720px) {
@@ -155,14 +179,17 @@
   <div class="info-field">
     <label>Your name</label>
     <input type="text" id="f-name" placeholder="Full name" />
+    <span class="print-val" id="pv-name"></span>
   </div>
   <div class="info-field">
     <label>Company / Venture</label>
     <input type="text" id="f-company" placeholder="Company name" />
+    <span class="print-val" id="pv-company"></span>
   </div>
   <div class="info-field">
     <label>Date</label>
     <input type="text" id="f-date" placeholder="dd mmm yyyy" />
+    <span class="print-val" id="pv-date"></span>
   </div>
 </div>
 
@@ -172,46 +199,55 @@
     <div class="cell cell-kp" data-key="kp" onclick="activate(this)">
       <div class="cell-label">Key Partnerships</div><div class="cell-number">1</div>
       <textarea class="cell-input" id="note-kp" placeholder="Who helps you deliver?" oninput="markFilled('kp')"></textarea>
+      <div class="print-area" id="pa-kp"></div>
     </div>
 
     <div class="cell cell-ka" data-key="ka" onclick="activate(this)">
       <div class="cell-label">Key Activities</div><div class="cell-number">2</div>
       <textarea class="cell-input" id="note-ka" placeholder="What does your business do repeatedly?" oninput="markFilled('ka')"></textarea>
+      <div class="print-area" id="pa-ka"></div>
     </div>
 
     <div class="cell cell-vp" data-key="vp" onclick="activate(this)">
       <div class="cell-label">Value Propositions</div><div class="cell-number">3</div>
       <textarea class="cell-input" id="note-vp" placeholder="What job are you hired to do?" oninput="markFilled('vp')"></textarea>
+      <div class="print-area" id="pa-vp"></div>
     </div>
 
     <div class="cell cell-cr" data-key="cr" onclick="activate(this)">
       <div class="cell-label">Customer Relationships</div><div class="cell-number">4</div>
       <textarea class="cell-input" id="note-cr" placeholder="How do they experience you?" oninput="markFilled('cr')"></textarea>
+      <div class="print-area" id="pa-cr"></div>
     </div>
 
     <div class="cell cell-cs" data-key="cs" onclick="activate(this)">
       <div class="cell-label">Customer Segments</div><div class="cell-number">5</div>
       <textarea class="cell-input" id="note-cs" placeholder="Start here. Who exactly?" oninput="markFilled('cs')"></textarea>
+      <div class="print-area" id="pa-cs"></div>
     </div>
 
     <div class="cell cell-kr" data-key="kr" onclick="activate(this)">
       <div class="cell-label">Key Resources</div><div class="cell-number">6</div>
       <textarea class="cell-input" id="note-kr" placeholder="What assets power this?" oninput="markFilled('kr')"></textarea>
+      <div class="print-area" id="pa-kr"></div>
     </div>
 
     <div class="cell cell-ch" data-key="ch" onclick="activate(this)">
       <div class="cell-label">Channels</div><div class="cell-number">7</div>
       <textarea class="cell-input" id="note-ch" placeholder="How do they find you?" oninput="markFilled('ch')"></textarea>
+      <div class="print-area" id="pa-ch"></div>
     </div>
 
     <div class="cell cell-cost" data-key="cost" onclick="activate(this)">
       <div class="cell-label">Cost Structure</div><div class="cell-number">8</div>
       <textarea class="cell-input" id="note-cost" placeholder="Where does the money go?" oninput="markFilled('cost')"></textarea>
+      <div class="print-area" id="pa-cost"></div>
     </div>
 
     <div class="cell cell-rev" data-key="rev" onclick="activate(this)">
       <div class="cell-label">Revenue Streams</div><div class="cell-number">9</div>
       <textarea class="cell-input" id="note-rev" placeholder="How do you get paid?" oninput="markFilled('rev')"></textarea>
+      <div class="print-area" id="pa-rev"></div>
     </div>
 
   </div>
@@ -344,6 +380,19 @@ function markFilled(key) {
 document.getElementById('f-date').value = new Date().toLocaleDateString('en-IN', {
   day: '2-digit', month: 'short', year: 'numeric'
 });
+
+function syncForPrint() {
+  ['name','company','date'].forEach(id => {
+    const val = document.getElementById('f-'+id).value;
+    document.getElementById('pv-'+id).textContent = val;
+  });
+  ['kp','ka','vp','cr','cs','kr','ch','cost','rev'].forEach(key => {
+    const val = document.getElementById('note-'+key).value;
+    document.getElementById('pa-'+key).textContent = val;
+  });
+}
+
+window.addEventListener('beforeprint', syncForPrint);
 </script>
 </body>
 </html>
